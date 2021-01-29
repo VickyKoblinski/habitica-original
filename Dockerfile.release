@@ -3,7 +3,6 @@ FROM node:14
 # Install global packages
 RUN npm install -g gulp-cli mocha
 
-# Clone Habitica repo and install dependencies
 RUN mkdir -p /usr/src/habitrpg
 WORKDIR /usr/src/habitrpg
 COPY package*.json ./

@@ -1,10 +1,29 @@
-version: "3"
+version: "3.4"
+
+x-common-variables: &common-variables
+  ADMIN_EMAIL: admin@habitica.com
+  EMAILS_COMMUNITY_MANAGER_EMAIL: admin@habitica.com
+  AMAZON_PAYMENTS_CLIENT_ID: amzn1.application-oa2-client.68ed9e6904ef438fbc1bf86bf494056e
+  AMAZON_PAYMENTS_SELLER_ID: AMQ3SB4SG5E91
+  AMPLITUDE_KEY: e8d4c24b3d6ef3ee73eeba715023dd43
+  BASE_URL: https://habitica.com
+  FACEBOOK_KEY: 128307497299777
+  GA_ID: UA-33510635-1
+  GOOGLE_CLIENT_ID: 1035232791481-32vtplgnjnd1aufv3mcu1lthf31795fq.apps.googleusercontent.com
+  LOGGLY_CLIENT_TOKEN: ab5663bf-241f-4d14-8783-7d80db77089a
+  NODE_ENV: production
+  STRIPE_PUB_KEY: pk_85fQ0yMECHNfHTSsZoxZXlPSwSNfA
+  APPLE_AUTH_CLIENT_ID: 9Q9SMRMCNN.com.habitrpg.ios.Habitica
+
 services:
 
   client:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile.release
     environment:
-      - BASE_URL=http://server:3000
+      <<: *common-variables
+      BASE_URL: http://server:3000
     ports:
         - "8080:8080"
     command: ["npm", "run", "client:dev"]
@@ -12,11 +31,14 @@ services:
       - server
 
   server:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile.release
     ports:
       - "3000:3000"
     environment:
-      - NODE_DB_URI=mongodb://mongo/habitrpg
+      <<: *common-variables
+      NODE_DB_URI: mongodb://mongo/habitrpg
     depends_on:
       - mongo
 

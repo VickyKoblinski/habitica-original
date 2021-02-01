@@ -10,4 +10,5 @@ RUN npm install
 COPY . .
 
 # Start Habitica
-CMD ["node", "./website/transpiled-babel/index.js"]
+RUN npm run postinstall
+CMD ["npm", "start"]
